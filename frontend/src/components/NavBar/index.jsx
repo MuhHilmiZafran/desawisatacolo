@@ -4,6 +4,10 @@ import { NavLink } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import { AccountCircleRounded, Search } from "@mui/icons-material";
 import Footer from "../Footer";
+import axios from "axios";
+import ButtonPrimary from "../ButtonPrimary";
+import Dropdown from "../Dropdown";
+import { useForm } from "react-hook-form";
 
 const NavBar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -13,6 +17,11 @@ const NavBar = () => {
   const normalLink =
     "hover:text-cyan-600 hover:bg-white text-white rounded-md py-2 px-2";
 
+    const {
+      control,
+      getValues,
+    } = useForm();
+  
   const handleToggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -44,6 +53,19 @@ const NavBar = () => {
     };
   }, []);
 
+  const onLogout = async () => {
+    try {
+      await axios.get("http://localhost:8080/api/logout");
+
+      // Handle success (redirect or show a success message)
+      console.log("logout successfully");
+      navigate("/login");
+    } catch (error) {
+      // Handle error (show an error message)
+      console.error("Error logout data:", error);
+    }
+  };
+
   return (
     <div>
       <div
@@ -56,18 +78,12 @@ const NavBar = () => {
             <div className="text-xl text-white">Desa Wisata Colo</div>
             <div className="text-md text-white">Kabupaten Kudus</div>
           </div>
-          <div className="flex g-2">
-            <NavLink to={"/admin"}>
-              <div className="rounded-md bg-cyan-300 p-2 text-white">
-                Login Admin
-              </div>
-            </NavLink>
-
-            <div className="p-2 text-white flex items-center">
-              <AccountCircleRounded />
-              Sign In
-            </div>
+          <div>
+            <Dropdown >
+              <option>Login</option>
+            </Dropdown>
           </div>
+          
         </div>
         <nav className="flex items-center text-md justify-between flex-wrap bg-teal-500 px-5 py-1 w-full z-10">
           <NavLink
@@ -109,7 +125,7 @@ const NavBar = () => {
                 }
                 onClick={handleLinkClick}
               >
-                Destinasi
+                Destinasi Wisata
               </NavLink>
               <NavLink
                 to="/produk-wisata"
@@ -118,8 +134,17 @@ const NavBar = () => {
                 }
                 onClick={handleLinkClick}
               >
-                Produk
+                Oleh-Oleh Khas
                 {/* dropdown */}
+              </NavLink>
+              <NavLink
+                to="/paket-wisata"
+                className={({ isActive }) =>
+                  isActive ? activelink : normalLink
+                }
+                onClick={handleLinkClick}
+              >
+                Paket Wisata
               </NavLink>
               <NavLink
                 to="/artikel"
@@ -177,7 +202,7 @@ const NavBar = () => {
         <div>
           <Outlet />
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

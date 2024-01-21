@@ -8,12 +8,13 @@ import {
 import ButtonPrimary from "../ButtonPrimary";
 import moment from "moment/moment";
 import { useState } from "react";
+import ImageViewer from "../ImageViewer";
 
 const CardAttractionAdmin = ({
   openModalEdit,
   openModalComment,
   payloads,
-  deleteAttraction,
+  deleteArticle,
 }) => {
   const [isShowModalConfirm, setIsShowModalConfirm] = useState(false);
   const { thumbnail, name, created_at, category_id } = payloads;
@@ -39,13 +40,22 @@ const CardAttractionAdmin = ({
   };
 
   return (
-    <div className="bg-white w-full p-[16px] border border-solid mb-4">
+    <div className="bg-white h-full w-full p-[16px] border border-solid mb-4">
       <div className="flex flex-row">
-        <img
+        {/* <img
           src={thumbnail}
           className="w-44 h-44 object-cover"
           onError={handleImageError}
-        />
+        /> */}
+        {/* <img
+            className="object-cover w-full h-full"
+            src={thumbnail}
+            alt={name}
+            onError={handleImageError}
+          /> */}
+        {thumbnail && (
+          <ImageViewer imageName={thumbnail} className={" w-46 h-44"} />
+        )}
 
         <div className="flex flex-col w-full gap-y-2 ml-[32px] justify-between">
           <div className="flex flex-col gap-3">
@@ -70,7 +80,7 @@ const CardAttractionAdmin = ({
                   className="w-full h-2 rounded-sm border text-cyan-700 border-cyan-600 justify-center items-center flex outline-cyan-600 hover:bg-cyan-300"
                   onClick={openModalComment}
                 >
-                  <Comment style={{ fontSize: "1rem"  }} />
+                  <Comment style={{ fontSize: "1rem" }} />
                   {/* <span className="text-sm font-medium">Comment</span> */}
                 </ButtonPrimary>
               </div>
@@ -86,7 +96,7 @@ const CardAttractionAdmin = ({
               <div className="columns">
                 <ButtonPrimary
                   className="w-full h-2 rounded-sm border text-red-600 border-red-600 justify-center items-center flex outline-red-600 hover:bg-red-300"
-                  onClick={deleteAttraction}
+                  onClick={deleteArticle}
                 >
                   <Delete style={{ fontSize: "1rem" }} />
                   {/* <span className="text-sm font-medium">Delete</span> */}

@@ -6,11 +6,13 @@ import axios from "axios";
 import CardAttractionAdmin from "../../components/CardAttractionAdmin";
 import AddAttractionModal from "../../components/AddAttractionModal";
 import EditAttractionModal from "../../components/EditAttractionModal";
+import CommentModal from "../../components/CommentModal";
 
 const TouristAttractionAdmin = () => {
   const [attractions, setAttractions] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [isShowModalComment, setIsShowModalComment] = useState(false);
   const [isShowModalAdd, setIsShowModalAdd] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
   const [attractionId, setAttractionId] = useState("");
@@ -57,6 +59,16 @@ const TouristAttractionAdmin = () => {
     setAttractionId("");
   };
 
+  const handleOpenModalComment = (attractionId) => {
+    setIsShowModalComment(true);
+    setAttractionId(attractionId);
+  };
+
+  const handleShowModalComment = (showModal) => {
+    setIsShowModalComment(showModal);
+    setAttractionId("");
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
@@ -73,7 +85,6 @@ const TouristAttractionAdmin = () => {
             }}
             className="w-full h-8 rounded-sm border justify-center items-center flex gap-x-2"
           >
-            
             <Add style={{ fontSize: "1rem" }} />
 
             <span className="text-sm font-medium">Tambah Wisata</span>
@@ -84,12 +95,18 @@ const TouristAttractionAdmin = () => {
         {attractions.map((attraction) => (
           <CardAttractionAdmin
             key={attraction.id}
+            openModalComment={() => handleOpenModalComment(attraction.id)}
             openModalEdit={() => handleOpenModalEdit(attraction.id)}
-            deleteAttraction={() => deleteAttraction(attraction.id)}
+            deleteArticle={() => deleteAttraction(attraction.id)}
             payloads={attraction}
           />
         ))}
       </div>
+      <CommentModal
+        openModal={isShowModalComment}
+        onClose={handleShowModalComment}
+        attractionId={attractionId}
+      />
       <AddAttractionModal
         openModal={isShowModalAdd}
         onClose={() => {

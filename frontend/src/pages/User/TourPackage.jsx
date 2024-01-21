@@ -3,18 +3,19 @@ import { CardAttractionLong } from "../../components/CardAttractionLong";
 import Footer from "../../components/Footer";
 import SearchBar from "../../components/SearchBar";
 import axios from "axios";
+import { CardTourPackageLong } from "../../components/CardTourPackageLong";
 
 const TourPackage = () => {
-  const [attractions, setAttractions] = useState([]);
+  const [tourPackages, setTourPackages] = useState([]);
 
   useEffect(() => {
-    getAttractions();
+    getTourPackages();
   }, []);
 
-  const getAttractions = async () => {
+  const getTourPackages = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/attractions");
-      setAttractions(response.data);
+      const response = await axios.get("http://localhost:8080/api/tour-packages");
+      setTourPackages(response.data);
     } catch (error) {
       console.error("Error fetching attractions:", error);
     }
@@ -23,9 +24,9 @@ const TourPackage = () => {
     <div>
       <div className="flex flex-col gap-5 px-6 md:px-12 py-9">
         <div className="flex flex-col gap-1">
-          <div className="text-3xl font-medium">Destinasi Wisata</div>
+          <div className="text-3xl font-medium">Paket Wisata</div>
           <div className="text-md text-slate-500">
-            Berisi Informasi Destinasi Wisata Desa Wisata Colo
+            Berisi Informasi Paket Wisata Desa Wisata Colo
           </div>
         </div>
         <div>
@@ -37,8 +38,8 @@ const TourPackage = () => {
           />
         </div>
         <div>
-          {attractions.map((attraction) => (
-            <CardAttractionLong key={attraction.id} payloads={attraction} />
+          {tourPackages.map((tourPackage) => (
+            <CardTourPackageLong key={tourPackage.id} payloads={tourPackage} />
           ))}
         </div>
       </div>

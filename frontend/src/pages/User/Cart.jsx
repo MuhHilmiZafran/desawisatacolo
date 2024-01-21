@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import ImageViewer from "../../components/ImageViewer";
 import CartProduct from "../../components/CartProduct";
+import { NavLink } from "react-router-dom";
 
 const TouristAttractionDetail = () => {
   const { id } = useParams();
@@ -62,9 +63,9 @@ const TouristAttractionDetail = () => {
                 <p className="text-md">2</p>
               </div>
             </div>
-            <div className="bg-cyan-600 flex justify-center rounded-md py-1 text-white mt-3">
+            <NavLink to={'/checkout'} className="bg-cyan-600 flex justify-center rounded-md py-1 text-white mt-3">
               Checkout
-            </div>
+            </NavLink>
           </div>
         </div>
       </div>

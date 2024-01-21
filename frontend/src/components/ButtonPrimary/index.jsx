@@ -8,7 +8,7 @@ const ButtonPrimary = ({
   return (
     <button
       type={type}
-      className={`box-border active:bg-cyan-700 py-4 px-4 rounded-[3px] text-white text-xs transition ${className}`}
+      className={`box-border border py-4 px-4 rounded-[3px] text-xs transition ${className}`}
       disabled={processing}
       onClick={onClick}
     >

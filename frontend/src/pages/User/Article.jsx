@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
 import { CardAttractionLong } from "../../components/CardAttractionLong";
 import axios from "axios";
+import { CardArticle } from "../../components/CardArticle";
 
 const TouristAttraction = () => {
-  const [attractions, setAttractions] = useState([]);
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    getAttractions();
+    getArticles();
   }, []);
 
-  const getAttractions = async () => {
+  const getArticles = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/attractions");
-      setAttractions(response.data);
+      const response = await axios.get("http://localhost:8080/api/articles");
+      setArticles(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching attractions:", error);
     }
@@ -28,9 +30,9 @@ const TouristAttraction = () => {
             Berisi Artikel dan Berita tentang Desa Wisata Colo.
           </div>
         </div>
-        <div>
-          {attractions.map((attraction) => (
-            <CardAttractionLong key={attraction.id} payloads={attraction} />
+        <div className="flex gap-3">
+          {articles?.map((article) => (
+            <CardArticle key={article.id} payloads={article} />
           ))}
         </div>
       </div>

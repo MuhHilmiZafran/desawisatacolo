@@ -64,7 +64,7 @@ const Dropdown = ({
           {React.Children.map(children, (child) => (
             <li
               key={child.props.value}
-              className="px-8 py-4 h-[44px] flex items-center hover:bg-primaryHover hover:text-white"
+              className="px-8 py-4 h-[44px] flex items-center hover:bg-primaryHover hover:text-black"
               onClick={() => handleOptionSelect(child.props)}
             >
               {child.props.label}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ImageViewer = ({ imageName }) => {
+const ImageViewer = ({ imageName, className }) => {
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
@@ -20,9 +20,15 @@ const ImageViewer = ({ imageName }) => {
   }, [imageName]);
 
   return (
-    <div >
-      {imageUrl && <img src={imageUrl} alt="Gambar" className="object-cover rounded-lg md:w-[700px] md:h-[430px]"/>}
-    </div>
+    <>
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt="Gambar"
+          className={`${className} object-cover rounded-lg`}
+        />
+      )}
+    </>
   );
 };
 

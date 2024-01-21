@@ -8,6 +8,7 @@ import axios from "axios";
 const LandingPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [attractions, setAttractions] = useState([])
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     getAttractions();
@@ -23,81 +24,42 @@ const LandingPage = () => {
     }
   };
 
-  const images = [
-    "https://res.cloudinary.com/dzisbnmi0/image/upload/v1700667556/cld-sample-5.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg",
-  ];
-
-  const article = {
-    title: "Judul Artikel",
-    description: "Deskripsi singkat artikel ini.",
-    imageUrl: "https://placekitten.com/400/200", // Ganti dengan URL gambar artikel Anda
-    author: {
-      name: "Nama Penulis",
-      avatar: "https://placekitten.com/40/40", // Ganti dengan URL gambar avatar penulis Anda
-    },
-    date: "November 26, 2023", // Ganti dengan tanggal artikel Anda
-  };
-
-  const dataWisata = [
-    {
-      judul: "Pantai Indah",
-      kategori: "Wisata Alam",
-      deskripsi: "Pantai dengan pemandangan yang indah.",
-      gambar:
-        "https://static.republika.co.id/uploads/images/inpicture_slide/foto-kompleks-makam-sunan-muria-salah-satu-walisongo-yang-_160812200449-897.jpg",
-    },
-    {
-      judul: "Gunung Seru",
-      kategori: "Wisata Religi",
-      deskripsi:
-        "Nikmati pendakian di puncak gunung yang menantang. lorem ipsum dolor siamterkaksdkjasdkajsd",
-      gambar:
-        "https://static.republika.co.id/uploads/images/inpicture_slide/foto-kompleks-makam-sunan-muria-salah-satu-walisongo-yang-_160812200449-897.jpg",
-    },
-    {
-      judul: "Gunung Seru",
-      kategori: "Wisata Religi",
-      deskripsi:
-        "Nikmati pendakian di puncak gunung yang menantang. lorem ipsum dolor siamterkaksdkjasdkajsd",
-      gambar:
-        "https://static.republika.co.id/uploads/images/inpicture_slide/foto-kompleks-makam-sunan-muria-salah-satu-walisongo-yang-_160812200449-897.jpg",
-    },
-    {
-      judul: "Gunung Seru",
-      kategori: "Wisata Religi",
-      deskripsi:
-        "Nikmati pendakian di puncak gunung yang menantang. lorem ipsum dolor siamterkaksdkjasdkajsd",
-      gambar:
-        "https://static.republika.co.id/uploads/images/inpicture_slide/foto-kompleks-makam-sunan-muria-salah-satu-walisongo-yang-_160812200449-897.jpg",
-    },
-    // Tambahkan data wisata lainnya sesuai kebutuhan
-  ];
-
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
 
   useEffect(() => {
-    // Auto change image every 5 seconds
-    const interval = setInterval(() => {
-      handleNext();
-    }, 5000);
+    getArticles();
+  }, []);
 
-    // Clear the interval when the component is unmounted or when the activeIndex changes
-    return () => clearInterval(interval);
-  }, [activeIndex]);
+  const getArticles = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/articles");
+      setArticles(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error("Error fetching attractions:", error);
+    }
+  };
+
+  // const handlePrev = () => {
+  //   setActiveIndex((prevIndex) =>
+  //     prevIndex === 0 ? images.length - 1 : prevIndex - 1
+  //   );
+  // };
+
+  // const handleNext = () => {
+  //   setActiveIndex((prevIndex) =>
+  //     prevIndex === images.length - 1 ? 0 : prevIndex + 1
+  //   );
+  // };
+
+  // useEffect(() => {
+  //   // Auto change image every 5 seconds
+  //   const interval = setInterval(() => {
+  //     handleNext();
+  //   }, 5000);
+
+  //   // Clear the interval when the component is unmounted or when the activeIndex changes
+  //   return () => clearInterval(interval);
+  // }, [activeIndex]);
 
   return (
     <>
@@ -178,8 +140,8 @@ const LandingPage = () => {
           </div> */}
           <div className="flex justify-center items-center h-full w-screen">
             <div className="flex justify-center items-center flex-col flex-wrap md:flex-row gap-5 px-5">
-              {attractions.map((attraction, index) => (
-                <CardAttractionSmall key={index} {...attraction} />
+              {attractions.map((attraction) => (
+                <CardAttractionSmall key={attraction.id} payloads={attraction} />
               ))}
             </div>
           </div>
@@ -191,15 +153,13 @@ const LandingPage = () => {
           </NavLink>
         </div>
 
-        <div className="flex w-full flex-col justify-center px-9 items-center">
+        <div className="flex w-full flex-col justify-center px-9 items-center mb-4">
           <h2 className="text-2xl font-bold mb-4">Artikel & Berita</h2>
 
           <div className="flex flex-col md:flex-row justify-center items-center gap-5 w-full">
-            {/* <CardArticle {...article} />
-            <CardArticle {...article} />
-            <CardArticle {...article} /> */}
-
-            {/* Repeat for other CardWisata components */}
+            {articles.map((article) => (
+              <CardArticle key={article.id} payloads={article} />
+            ))}
           </div>
         </div>
       </div>

@@ -2,12 +2,46 @@ import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { NavLink } from "react-router-dom";
 import InputField from "../../components/InputField";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const onLogin = () => {
-    return navigate("/");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+
+      const response = await axios.post(
+        "http://localhost:8080/api/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Handle success (redirect or show a success message)
+      console.log("Data login successfull", response);
+      //set response.data to local storage
+      localStorage.setItem("data", JSON.stringify(response.data.data));
+
+      navigate("/");
+    } catch (error) {
+      // Handle error (show an error message)
+      console.error("Error login data:", error);
+    }
   };
 
   return (
@@ -21,22 +55,22 @@ const Login = () => {
               </NavLink>
             </div>
             <h2 className="text-3xl mb-3 sm:text-xl">Login</h2>
-            <form onSubmit={onLogin}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <InputField
-                name="username"
-                label="Username"
+                name="email"
+                label="Email"
                 type="text"
-                placeholder="johndoe"
-                // errors={errors}
-                // register={register}
+                placeholder="johndoe@gmail.com"
+                errors={errors}
+                register={register}
               />
               <InputField
                 name="password"
                 label="Password"
                 type="password"
                 placeholder="it's secret"
-                // errors={errors}
-                // register={register}
+                errors={errors}
+                register={register}
               />
               <div className="w-full">
                 <button

@@ -39,7 +39,7 @@ class Attractions extends ResourceController
 
     public function create()
     {
-        
+
         // Validation code can be added here
 
         // Get the uploaded thumbnail
@@ -79,39 +79,57 @@ class Attractions extends ResourceController
     }
 
     public function update($id = null)
-{
-    // // Validation rules
-    // $validationRules = [
-    //     'name' => 'required',
-    //     'thumbnail' => 'uploaded[thumbnail]|max_size[thumbnail,1024]|is_image[thumbnail]',
-    //     'description' => 'required',
-    //     'category_id' => 'required|numeric',
-    //     'price' => 'required|numeric',
-    // ];
+    {
+        // // Validation rules
+        // $validationRules = [
+        //     'name' => 'required',
+        //     'thumbnail' => 'uploaded[thumbnail]|max_size[thumbnail,1024]|is_image[thumbnail]',
+        //     'description' => 'required',
+        //     'category_id' => 'required|numeric',
+        //     'price' => 'required|numeric',
+        // ];
 
-    // Validate input data
-    // if (!$this->validate($validationRules)) {
-    //     // Respond with validation errors
-    //     return $this->failValidationError($this->validator->getErrors());
-    // }
+        // Validate input data
+        // if (!$this->validate($validationRules)) {
+        //     // Respond with validation errors
+        //     return $this->failValidationError($this->validator->getErrors());
+        // }
 
-    // Get the uploaded thumbnail
-    $thumbnail = $this->request->getFile('thumbnail');
+        // Get the uploaded thumbnail
+        if ($this->request->getFile('thumbnail')) {
+            $data = $this->model->find($id);
 
-    // Check if a file has been uploaded
-    if ($thumbnail->isValid() && !$thumbnail->hasMoved()) {
-        // Generate a random name and move the thumbnail to the uploads directory
-        $newName = $thumbnail->getRandomName();
-        $thumbnail->move('./uploads', $newName);
+            $oldThumbnailFilename = $data['thumbnail'];
 
-        // Prepare data for updating
-        $data = [
-            'name' => $this->request->getVar('name'),
-            'thumbnail' => $newName,
-            'description' => $this->request->getVar('description'),
-            'category_id' => $this->request->getVar('category_id'),
-            'price' => $this->request->getVar('price'),
-        ];
+            $thumbnailPath = FCPATH . 'uploads/' . $oldThumbnailFilename;
+
+            // Check if the file exists and delete it
+            if (file_exists($thumbnailPath) && is_file($thumbnailPath)) {
+                unlink($thumbnailPath);
+            }
+
+            $thumbnail = $this->request->getFile('thumbnail');
+            $newName = $thumbnail->getRandomName();
+            $thumbnail->move('./uploads', $newName);
+
+            // Prepare data for updating
+            $data = [
+                'name' => $this->request->getVar('name'),
+                'thumbnail' => $newName,
+                'description' => $this->request->getVar('description'),
+                'category_id' => $this->request->getVar('category_id'),
+                'price' => $this->request->getVar('price'),
+            ];
+        } else {
+            // Prepare data for updating
+            $data = [
+                'name' => $this->request->getVar('name'),
+                'thumbnail' => $this->request->getVar('thumbnail'),
+                'description' => $this->request->getVar('description'),
+                'category_id' => $this->request->getVar('category_id'),
+                'price' => $this->request->getVar('price'),
+            ];
+        }
 
         // Update the data in the database
         if ($this->model->update($id, $data)) {
@@ -129,11 +147,9 @@ class Attractions extends ResourceController
             // Respond with an error message if the update fails
             return $this->fail('Failed to update attraction data.');
         }
-    } else {
-        // Respond with a validation error if thumbnail is not valid
-        return $this->failValidationError($thumbnail->getErrorString());
+
+        
     }
-}
 
 
 
@@ -150,7 +166,7 @@ class Attractions extends ResourceController
             $this->model->delete($id);
 
             // Construct the path to the thumbnail file
-            $thumbnailPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . $thumbnailFilename;
+            $thumbnailPath = FCPATH . 'uploads/' . $thumbnailFilename;
 
             // Check if the file exists and delete it
             if (file_exists($thumbnailPath) && is_file($thumbnailPath)) {

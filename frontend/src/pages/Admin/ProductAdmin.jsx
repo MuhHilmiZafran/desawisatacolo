@@ -1,20 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tables from "../../components/Tables/Tables";
 import TableHeader from "../../components/Tables/TableHeader";
 import TableBody from "../../components/Tables/TableBody";
 import SearchBar from "../../components/SearchBar";
-import { Add } from "@mui/icons-material";
+import { Add, Comment, Delete, Edit } from "@mui/icons-material";
 import ButtonPrimary from "../../components/ButtonPrimary";
+import axios from "axios";
+import TableRow from "../../components/Tables/TableRow";
+import AddProductModal from "../../components/AddProductModal";
+import EditProductModal from "../../components/EditProductModal";
 
 const ProductAdmin = () => {
+  const [products, setProducts] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [isShowModalAdd, setIsShowModalAdd] = useState(false);
+  const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+  const [productId, setProductId] = useState("");
 
   const handleSearchProduct = (event) => {
     const keyword = event.target.value;
     setSearchKeyword(keyword);
     setSearchValue(keyword);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const getProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/products");
+      setProducts(response.data); // Assuming the products data is an array
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const deleteProduct = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/api/products/${productId}`
+      );
+
+      console.log(response.data);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleOpenModalEdit = (productId) => {
+    setIsShowModalEdit(true);
+    setProductId(productId);
+  };
+
+  const handleShowModalEdit = (showModal) => {
+    setIsShowModalEdit(showModal);
+    setProductId("");
   };
 
   return (
@@ -23,8 +66,8 @@ const ProductAdmin = () => {
         <SearchBar
           className="focus:outline-none text-neutralMediumLow"
           placeholder="Pencarian"
-            value={searchValue}
-            onChange={handleSearchProduct}
+          value={searchValue}
+          onChange={handleSearchProduct}
         />
         <div className="flex justify-center">
           <ButtonPrimary
@@ -46,13 +89,60 @@ const ProductAdmin = () => {
             <th className="py-2 px-4 border-b">Nama Produk</th>
             <th className="py-2 px-4 border-b">Deskripsi</th>
             <th className="py-2 px-4 border-b">Harga</th>
-            <th className="py-2 px-4 border-b">Image</th>
             <th className="py-2 px-4 border-b">Stok</th>
             <th className="py-2 px-4 border-b">Action</th>
           </TableHeader>
-          <TableBody></TableBody>
+          <TableBody>
+            {products.map((product) => (
+              <TableRow scope="row" key={product.id}>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td>{product.description}</td>
+                <td>{product.price}</td>
+                <td>{product.amount}</td>
+
+                <td>
+                  <div>
+                    <div className="flex flex-row py-[8px] gap-x-4 justify-end">
+                      <div className="columns">
+                        <ButtonPrimary
+                          className="w-full h-2 rounded-sm border text-green-600 border-green-600 justify-center items-center flex outline-green-600 hover:bg-green-300"
+                          onClick={() => handleOpenModalEdit(product.id)}
+                        >
+                          <Edit style={{ fontSize: "1rem" }} />
+                          {/* <span className="text-sm font-medium">Edit</span> */}
+                        </ButtonPrimary>
+                      </div>
+                      <div className="columns">
+                        <ButtonPrimary
+                          className="w-full h-2 rounded-sm border text-red-600 border-red-600 justify-center items-center flex outline-red-600 hover:bg-red-300"
+                          onClick={() => deleteProduct(product.id)}
+                        >
+                          <Delete style={{ fontSize: "1rem" }} />
+                          {/* <span className="text-sm font-medium">Delete</span> */}
+                        </ButtonPrimary>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </TableRow>
+            ))}
+          </TableBody>
         </Tables>
       </div>
+      <AddProductModal
+        openModal={isShowModalAdd}
+        onClose={() => {
+          setIsShowModalAdd(false);
+        }}
+        // updateData={fetchAllArticles}
+      />
+      <EditProductModal
+        openModal={isShowModalEdit}
+        onClose={handleShowModalEdit}
+        productId={productId}
+        // updateData={fetchAllArticles}
+      />
     </div>
   );
 };

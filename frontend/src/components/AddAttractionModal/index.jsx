@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddRounded } from "@mui/icons-material";
@@ -6,9 +6,10 @@ import Modal from "../Modal";
 import ButtonPrimary from "../ButtonPrimary";
 import InputField from "../InputField";
 import axios from "axios";
+import Dropdown from "../Dropdown";
 
 const AddAttractionModal = ({ openModal, onClose, updateData }) => {
-  const [topics, setTopics] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [imagePreview, setImagePreview] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -45,6 +46,21 @@ const AddAttractionModal = ({ openModal, onClose, updateData }) => {
     }, 2000);
   };
 
+  useEffect(() => {
+    if (openModal) {
+      getCategory();
+    }
+  }, [openModal]);
+
+  const getCategory = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/categories");
+      setCategories(response.data); // Assuming the attractions data is an array
+    } catch (error) {
+      console.error("Error fetching attractions:", error);
+    }
+  };
+
   // const getTopics = async () => {
   //   const token = getAuthCookie();
   //   try {
@@ -71,7 +87,7 @@ const AddAttractionModal = ({ openModal, onClose, updateData }) => {
     try {
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("category_id", data.category_id);
+      formData.append("category_id", data.category_id.value);
       formData.append("thumbnail", data.thumbnail[0]); // Assuming thumbnail is a file input
       formData.append("description", data.description);
       formData.append("price", data.price);
@@ -120,14 +136,39 @@ const AddAttractionModal = ({ openModal, onClose, updateData }) => {
               Thumbnail:
               <input type="file" {...register("thumbnail")} />
             </label>
-            <InputField
+            {/* <InputField
               name="category_id"
               label="Kategori"
               type="number"
               placeholder="Ex : Ruby Jane"
               errors={errors}
               register={register}
-            />
+            /> */}
+            {/* <label>
+              <select {...register("category_id")}>
+                {category.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label> */}
+            <Dropdown
+              control={control}
+              name={"category_id"}
+              label={"Kategori"}
+              placeholder={"Pilih kategori"}
+              handleSelect={handleSelectTopic}
+              errors={errors}
+            >
+              {categories.map((category) => (
+                <option
+                  label={category.name}
+                  value={category.id}
+                  key={category.id}
+                />
+              ))}
+            </Dropdown>
             <InputField
               name="price"
               label="Price"
@@ -153,10 +194,10 @@ const AddAttractionModal = ({ openModal, onClose, updateData }) => {
           </form>
 
           <ButtonPrimary
-            className="w-full flex justify-center items-center"
+            className="w-full flex justify-center items-center text-red-600"
             onClick={handleClose}
           >
-            <span className="text-[16px] font-medium">Discard</span>
+            <span className="text-[16px] font-medium tect">Discard</span>
           </ButtonPrimary>
         </div>
       </Modal>

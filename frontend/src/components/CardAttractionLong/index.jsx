@@ -11,6 +11,7 @@ import moment from "moment/moment";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import ImageViewer from "../ImageViewer";
 
 export const CardAttractionLong = ({
   openModalEdit,
@@ -55,13 +56,16 @@ export const CardAttractionLong = ({
   return (
     <div className="bg-white w-full p-[16px] border border-solid mb-4 rounded-xl">
       <div className="flex flex-col md:flex-row">
-        <div className="relative md:w-[600px] md:h-72 overflow-hidden rounded-md">
-          <img
+        <div className="relative md:max-w-[600px] md:max-h-72 overflow-hidden rounded-md">
+          {/* <img
             className="object-cover w-full h-full"
             src={thumbnail}
             alt={name}
             onError={handleImageError}
-          />
+          /> */}
+          {thumbnail && (
+              <ImageViewer imageName={thumbnail} className={"w-[600px] h-[300px]"} />
+            )}
           <div className="absolute left-2 top-2 inline-block text-md bg-blue-500 text-white px-2 py-1 mb-2 rounded-tl rounded-br">
             {category.name}
           </div>
@@ -78,13 +82,8 @@ export const CardAttractionLong = ({
           </div>
           <div className="flex justify-between w-full mb-4">
             <div className="flex flex-row items-center">
-              <img
-                src=""
-                className="w-[40px] h-[40px] rounded-full object-cover"
-                onError={handleImageError}
-              />
+              
               <div className="flex flex-col ml-2">
-                <p className="font-medium text-sm capitalize">username</p>
                 <p className="font-medium text-xs text-slate-500 capitalize">
                   {formatDate}
                 </p>

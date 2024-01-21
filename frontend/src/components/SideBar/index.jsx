@@ -101,8 +101,8 @@ const Sidebar = ({ expand, handleExpandSidebar }) => {
           </div>
         </NavLink>
       </div>
-      <NavLink className="self-stretch p-2 rounded justify-center items-center gap-2 inline-flex">
-        <Logout />
+      <NavLink to={"/"} className="self-stretch p-2 rounded justify-center items-center gap-2 inline-flex">
+        {/* <Logout /> */}
         <div className="text-center text-neutral-600 text-xs font-normal font-['Roboto'] leading-none">
           Logout
         </div>

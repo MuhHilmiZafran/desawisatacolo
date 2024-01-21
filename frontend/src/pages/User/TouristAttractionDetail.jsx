@@ -4,10 +4,17 @@ import Footer from "../../components/Footer";
 import { useParams } from "react-router";
 import axios from "axios";
 import ImageViewer from "../../components/ImageViewer";
+import CommentSection from "../../components/CommentSection";
+import LogComment from "../../components/LogComment";
 
 const TouristAttractionDetail = () => {
   const { id } = useParams();
   const [attraction, setAttraction] = useState(null);
+  const [comments, setComments] = useState(null);
+
+  //get data local storage
+  const dataUser = JSON.parse(localStorage.getItem("data"));
+  const userId = dataUser?.id;
 
   useEffect(() => {
     fetchAttractionById();
@@ -19,6 +26,23 @@ const TouristAttractionDetail = () => {
         const url = `http://localhost:8080/api/attractions/${id}`;
         const response = await axios.get(url);
         setAttraction(response.data);
+      } catch (error) {
+        console.error("Error fetching attraction data:", error);
+        // Handle error (show an error message)
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchAllComment();
+  }, [id]);
+
+  const fetchAllComment = async () => {
+    if (id) {
+      try {
+        const url = `http://localhost:8080/api/comments`;
+        const response = await axios.get(url);
+        setComments(response.data);
       } catch (error) {
         console.error("Error fetching attraction data:", error);
         // Handle error (show an error message)
@@ -40,22 +64,13 @@ const TouristAttractionDetail = () => {
             {attraction?.thumbnail && (
               <ImageViewer imageName={attraction?.thumbnail} />
             )}
-            <div className="w-full text-justify text-black text-4xl font-normal font-['Inter']">
-              {attraction?.name}
+            <div className="w-full text-justify text-black text-3xl font-normal font-['Inter']">
+              {attraction?.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
             </div>
-            <div className="w-full text-justify text-black text-base font-normal font-['Inter']">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+             <div className="w-full text-justify text-black text-base font-normal font-['Inter']">
+              {attraction?.description}
             </div>
+            {/*
             <div className="w-full max-w-[300] md:max-w-[900px] justify-center items-center gap-5 flex">
               <img
                 className="w-56 h-24 md:w-[300px] md:h-[300px] rounded-lg object-cover"
@@ -101,7 +116,7 @@ const TouristAttractionDetail = () => {
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
               nisi ut aliquip ex ea commodo consequat.
-            </div>
+            </div> */}
           </div>
           <div className="max-w-[300px] flex flex-col gap-5">
             <div className="flex flex-col items-center gap-2 border rounded-md">
@@ -124,7 +139,7 @@ const TouristAttractionDetail = () => {
                 <CardFasilitas nama="Ojek" />
               </div>
             </div>
-            <div className="w-full flex flex-col rounded-lg border border-zinc-300 justify-center items-center">
+            {/* <div className="w-full flex flex-col rounded-lg border border-zinc-300 justify-center items-center">
               <div className="text-justify text-black text-2xl border-b w-full flex justify-center font-normal font-['Inter']">
                 Jam Buka
               </div>
@@ -186,10 +201,20 @@ const TouristAttractionDetail = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div>Comment</div>
+        <div>
+          <div>Comment</div>
+          <div>
+            <CommentSection tourismId={id} userId={userId} />
+          </div>
+          <div>
+            {comments?.map((comment) => (
+              <LogComment key={comment.id} payload={comment} />
+            ))}
+          </div>
+        </div>
       </div>
       <div></div>
     </>

@@ -1,9 +1,14 @@
-import { Navigate, RouterProvider, redirect, useNavigate, useParams } from "react-router";
+import {
+  Navigate,
+  RouterProvider,
+  redirect,
+  useNavigate,
+  useParams,
+} from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/User/LandingPage";
 import Login from "./pages/User/Login";
 import NavBar from "./components/NavBar";
-import Register from "./pages/User/Register";
 import DashboardAdmin from "./pages/Admin/DashboardAdmin";
 // import LoginAdmin from "./pages/Admin/LoginAdmin";
 import Dashboard from "./layouts/Dashboard";
@@ -24,6 +29,9 @@ import TourPackageReservation from "./pages/Admin/TourPackageReservation";
 import ProductDetail from "./pages/User/ProductDetail";
 import Checkout from "./pages/User/Checkout";
 import CartPage from "./pages/User/Cart";
+import Registrasi from "./pages/User/Registrasi";
+import TourPackage from "./pages/User/TourPackage";
+import TourPackageDetail from "./pages/User/TourPackageDetail";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/registrasi",
-    element: <Register />,
+    element: <Registrasi />,
   },
   {
     path: "/",
@@ -56,13 +64,22 @@ const router = createBrowserRouter([
         element: <Product />,
       },
       {
+        path: "/detail-produk/:id",
+        element: <ProductDetail />,
+      },
+      {
         path: "/checkout",
         element: <Checkout />,
       },
       {
-        path: "/detail-produk/:id",
-        element: <ProductDetail />,
+        path: "/paket-wisata",
+        element: <TourPackage />,
       },
+      {
+        path: "/detail-paket-wisata/:id",
+        element: <TourPackageDetail />,
+      },
+
       // {
       //   path: "/komoditas",
       //   element: <DetailWisata />,
@@ -181,7 +198,6 @@ function AdminRedirect() {
 }
 
 function App() {
-  
   return <RouterProvider router={router} />;
 }
 export default App;
