@@ -12,7 +12,7 @@ class AttractionModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields = ['name', 'thumbnail', 'description', 'category_id', 'price'];
+    protected $allowedFields = ['name', 'thumbnail', 'description', 'category_id', 'facilities', 'price'];
 
     // Dates
     protected $useTimestamps = true;

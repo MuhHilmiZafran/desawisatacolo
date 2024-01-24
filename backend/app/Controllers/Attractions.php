@@ -56,6 +56,7 @@ class Attractions extends ResourceController
                 'thumbnail' => $newName,
                 'description' => $this->request->getVar('description'),
                 'category_id' => $this->request->getVar('category_id'),
+                'facilities' => $this->request->getVar('facilities'),
                 'price' => $this->request->getVar('price'),
             ];
 
@@ -118,6 +119,7 @@ class Attractions extends ResourceController
                 'thumbnail' => $newName,
                 'description' => $this->request->getVar('description'),
                 'category_id' => $this->request->getVar('category_id'),
+                'facilities' => $this->request->getVar('facilities'),
                 'price' => $this->request->getVar('price'),
             ];
         } else {
@@ -126,6 +128,7 @@ class Attractions extends ResourceController
                 'name' => $this->request->getVar('name'),
                 'thumbnail' => $this->request->getVar('thumbnail'),
                 'description' => $this->request->getVar('description'),
+                'facilities' => $this->request->getVar('facilities'),
                 'category_id' => $this->request->getVar('category_id'),
                 'price' => $this->request->getVar('price'),
             ];
@@ -147,8 +150,6 @@ class Attractions extends ResourceController
             // Respond with an error message if the update fails
             return $this->fail('Failed to update attraction data.');
         }
-
-        
     }
 
 

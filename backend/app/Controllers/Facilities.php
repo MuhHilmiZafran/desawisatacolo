@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Models\CommentModel;
+use App\Models\FacilitiesModel;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 
-class Comments extends ResourceController
+class Facilities extends ResourceController
 {
   use ResponseTrait;
 
@@ -14,7 +14,7 @@ class Comments extends ResourceController
 
   public function __construct()
   {
-    $this->model = new CommentModel();
+    $this->model = new FacilitiesModel();
   }
 
   public function index()
@@ -113,29 +113,29 @@ class Comments extends ResourceController
     }
   }
   
-  public function getCommentsByContentId($contentId)
-  {
-    // Fetch comments by content id from the database
-    $data = $this->model->where('attraction_id', $contentId)->findAll();
+//   public function getCommentsByContentId($contentId)
+//   {
+//     // Fetch comments by content id from the database
+//     $data = $this->model->where('attraction_id', $contentId)->findAll();
 
-    if (!$data) {
-      return $this->failNotFound('Komentar tidak ditemukan');
-    }
+//     if (!$data) {
+//       return $this->failNotFound('Komentar tidak ditemukan');
+//     }
 
-    return $this->respond($data);
-  }
-public function getCommentCountByContentId($contentId)
-{
-  // Fetch the count of comments by content ID from the database
-  $count = $this->model->where('attraction_id', $contentId)->countAllResults();
+//     return $this->respond($data);
+//   }
+// public function getCommentCountByContentId($contentId)
+// {
+//   // Fetch the count of comments by content ID from the database
+//   $count = $this->model->where('attraction_id', $contentId)->countAllResults();
 
-  // Create a response array
-  $response = [
-    'status' => 200, // HTTP 200 OK
-    'error' => null,
-    'count' => $count,
-  ];
+//   // Create a response array
+//   $response = [
+//     'status' => 200, // HTTP 200 OK
+//     'error' => null,
+//     'count' => $count,
+//   ];
 
-  return $this->respond($response);
-}
+//   return $this->respond($response);
+// }
 }

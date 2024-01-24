@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
 use App\Models\AuthModel;
+use App\Controllers\JWT;
 
 class Auth extends BaseController
 {
@@ -86,11 +87,19 @@ class Auth extends BaseController
     // Validasi email dan password
     if ($user && password_verify($password, $user['password'])) {
 
+      // $key = 'your_secret_key'; // Replace with your own secret key
+      $payload = [
+        'id' => $user['id'],
+        'email' => $user['email'],
+        'role' => $user['role']
+      ];
+      // $token = JWT::encode($payload, $key);
 
       $data = [
         'id' => $user['id'],
         'email' => $user['email'],
         'role' => $user['role']
+        // 'token' => $token // Include the token in the response data
       ];
 
       return $this->respond(['data' => $data, 'message' => 'Login berhasil']);

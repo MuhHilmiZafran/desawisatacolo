@@ -36,6 +36,10 @@ $routes->delete('/api/products/(:num)', 'Products::delete/$1');
 $routes->get('/api/categories', 'Categories::index');
 $routes->get('/api/categories/(:num)', 'Categories::show/$1');
 
+// Fasilitas
+$routes->get('/api/facilities', 'Facilities::index');
+$routes->get('/api/facilities/(:num)', 'Facilities::show/$1');
+
 // Comment
 $routes->get('/api/comments', 'Comments::index');
 $routes->get('/api/comments/(:num)', 'Comments::show/$1');
@@ -43,6 +47,7 @@ $routes->post('/api/comments', 'Comments::create');
 $routes->post('/api/comments/(:num)', 'Comments::update/$1');
 $routes->delete('/api/comments/(:num)', 'Comments::delete/$1');
 $routes->get('/api/attractions/(:num)/comments', 'Comments::getCommentsByContentId/$1');
+$routes->get('/api/attractions/(:num)/comments/count', 'Comments::getCommentCountByContentId/$1');
 
 // Tour Package
 $routes->get('/api/tour-packages', 'TourPackages::index');
