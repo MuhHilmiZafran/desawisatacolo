@@ -64,7 +64,7 @@ const TourPackageReservation = () => {
   };
 
   const confirmReservation = (reservationId) => {
-    fetch(`http://localhost:8080/api/reservations/${reservationId}/confirm`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reservations/${reservationId}/confirm`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

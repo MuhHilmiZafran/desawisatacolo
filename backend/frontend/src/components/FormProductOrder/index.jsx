@@ -84,7 +84,7 @@ const FormProductOrder = ({ openModal, onClose, productId, userId }) => {
 
       console.log(data);
 
-      await axios.post("http://localhost:8080/api//product-transactions", formData, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/product-transactions`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

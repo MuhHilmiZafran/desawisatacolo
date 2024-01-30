@@ -41,7 +41,7 @@ const CardHistoryOrder = ({ payload }) => {
 
   useEffect(() => {
     // Panggil endpoint backend untuk mendapatkan deadline
-    fetch(`http://localhost:8080/api/product-transactions/deadline/${id}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/product-transactions/deadline/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setDeadline(data.deadline);
@@ -52,7 +52,7 @@ const CardHistoryOrder = ({ payload }) => {
   }, []);
 
   const cancelReservation = () => {
-    fetch(`http://localhost:8080/api/product-transactions/${id}/cancel`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/product-transactions/${id}/cancel`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const CardHistoryOrder = ({ payload }) => {
   };
 
   const finishReservation = () => {
-    fetch(`http://localhost:8080/api/product-transactions/${id}/finish`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/product-transactions/${id}/finish`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

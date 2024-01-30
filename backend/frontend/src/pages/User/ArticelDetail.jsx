@@ -44,7 +44,7 @@ const ArticleDetail = () => {
   const fetchAllComment = async () => {
     if (id) {
       try {
-        const url = `http://localhost:8080/api/articles/${id}/comments`;
+        const url = `${import.meta.env.VITE_API_BASE_URL}/api/articles/${id}/comments`;
         const response = await axios.get(url);
         setComments(response.data);
       } catch (error) {

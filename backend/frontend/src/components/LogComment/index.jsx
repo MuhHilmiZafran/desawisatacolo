@@ -13,7 +13,7 @@ const LogComment = ({ payload }) => {
   const getUserById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/user/${user_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/user/${user_id}`
       );
       setUser(response.data);
     } catch (error) {

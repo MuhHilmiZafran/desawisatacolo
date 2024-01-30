@@ -36,7 +36,8 @@ const DashboardAdmin = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/api/attractions/count`
       );
-      if (response.data.data > 0) {
+      console.log(response.data.data);
+      if (response.data.data.total_attractions > 0) {
         setCountAttractions(response.data.data);
       } else {
         setCountAttractions({ total_attractions: 0 });
@@ -50,6 +51,7 @@ const DashboardAdmin = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/api/tour-packages/count`
       );
+      console.log(response.data.data);
       if (response.data.data.total_tour_packages > 0) {
         setCountTourPackages(response.data.data);
       } else {
@@ -65,10 +67,10 @@ const DashboardAdmin = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/products/count`
       );
       console.log(response.data.data);
-      if (response.data.data > 0) {
+      if (response.data.data.total_product > 0) {
         setCountProducts(response.data.data);
       } else {
-        setCountProducts({ total_products: 0 });
+        setCountProducts({ total_product: 0 });
       }
     } catch (error) {
       console.error("Error fetching attractions:", error);
@@ -98,7 +100,7 @@ const DashboardAdmin = () => {
           count={countTourPackages?.total_tour_packages}
           name={"Paket Wisata"}
         />
-        <CardDashboard count={countProducts?.total_products} name={"Produk"} />
+        <CardDashboard count={countProducts?.total_product} name={"Produk"} />
         <CardDashboard count={countArticles?.total_articles} name={"Artikel"} />
       </div>
       {/* <div>

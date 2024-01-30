@@ -16,7 +16,7 @@ const PaymentReservation = () => {
 
   useEffect(() => {
     // Panggil endpoint backend untuk mendapatkan deadline
-    fetch(`http://localhost:8080/api/reservations/deadline/${id}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reservations/deadline/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setDeadline(data.deadline);
@@ -25,7 +25,7 @@ const PaymentReservation = () => {
         console.error("Error fetching deadline:", error);
       });
 
-    fetch(`http://localhost:8080/api/reservations/${id}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reservations/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setReservasi(data);
@@ -36,7 +36,7 @@ const PaymentReservation = () => {
   }, []);
 
   const cancelReservation = () => {
-    fetch(`http://localhost:8080/api/reservations/${id}/cancel`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reservations/${id}/cancel`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const PaymentReservation = () => {
     const formData = new FormData();
     formData.append("image", data.image[0]);
 
-    fetch(`http://localhost:8080/api/reservations/${id}`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reservations/${id}`, {
       method: "POST",
       body: formData,
     })

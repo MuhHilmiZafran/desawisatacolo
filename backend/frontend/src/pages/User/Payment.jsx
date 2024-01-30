@@ -41,7 +41,7 @@ const Payment = () => {
   const initiatePayment = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/payment",
+        `${import.meta.env.VITE_API_BASE_URL}/api/payment`,
         data
       ); // Ganti URL sesuai dengan endpoint backend Anda
       setSnapToken(response.data.snapToken);

@@ -64,7 +64,7 @@ const ProductTransaction = () => {
   };
 
   const confirmOrder = (orderid) => {
-    fetch(`http://localhost:8080/api/product-transactions/${orderid}/confirm`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/product-transactions/${orderid}/confirm`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
