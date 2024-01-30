@@ -32,6 +32,7 @@ const Registrasi = () => {
 
       // Handle success (redirect or show a success message)
       console.log("Data register successfully");
+      navigate(`/login`);
     } catch (error) {
       // Handle error (show an error message)
       console.error("Error register data:", error);

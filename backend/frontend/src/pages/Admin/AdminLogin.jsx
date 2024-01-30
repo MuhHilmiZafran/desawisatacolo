@@ -9,7 +9,7 @@ import AuthContext from "../../components/Context/AuthContext";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  
+
   const { setIsLoggedIn, setToken } = useContext(AuthContext);
 
   const {
@@ -45,7 +45,7 @@ const AdminLogin = () => {
       localStorage.setItem("data", JSON.stringify(response.data.data));
 
       localStorage.setItem("token", JSON.stringify(response.data.token));
-      console.log("token", response.data.token)
+      console.log("token", response.data.token);
 
       navigate("/admin/dashboard");
     } catch (error) {
