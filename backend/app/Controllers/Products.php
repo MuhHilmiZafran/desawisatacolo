@@ -20,9 +20,29 @@ class Products extends ResourceController
 
     public function index()
     {
-        // Fetch all attractions
+        // Fetch all Product
         $data = $this->model->findAll();
         return $this->respond($data);
+    }
+
+    public function countProduct()
+    {
+        // Count the total number of Product
+        $totalProduct = $this->model->countAll();
+
+        // Respond with the count
+        $response = [
+            'status' => 200, // HTTP 200 OK
+            'error' => null,
+            'data' => [
+                'total_product' => $totalProduct,
+            ],
+            'messages' => [
+                'success' => 'Attraction count retrieved successfully'
+            ]
+        ];
+
+        return $this->respond($response);
     }
 
     public function show($id = null)

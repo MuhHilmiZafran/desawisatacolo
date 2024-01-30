@@ -12,7 +12,7 @@ class TourPackageModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields = ['name', 'description', 'image', 'min_people', 'max_people', 'price'];
+    protected $allowedFields = ['name', 'description', 'image', 'min_people', 'max_people', 'price', 'facilities'];
 
     // Dates
     protected $useTimestamps = true;

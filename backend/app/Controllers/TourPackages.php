@@ -25,6 +25,26 @@ class TourPackages extends ResourceController
         return $this->respond($data);
     }
 
+    public function countTourPackages()
+    {
+        // Count the total number of attractions
+        $totalTourPackages = $this->model->countAll();
+
+        // Respond with the count
+        $response = [
+            'status' => 200, // HTTP 200 OK
+            'error' => null,
+            'data' => [
+                'total_tour_packages' => $totalTourPackages,
+            ],
+            'messages' => [
+                'success' => 'Attraction count retrieved successfully'
+            ]
+        ];
+
+        return $this->respond($response);
+    }
+
     public function show($id = null)
     {
         // Fetch a specific attraction by ID
@@ -58,6 +78,7 @@ class TourPackages extends ResourceController
                 'min_people' => $this->request->getVar('min_people'),
                 'max_people' => $this->request->getVar('max_people'),
                 'price' => $this->request->getVar('price'),
+                'facilities' => $this->request->getVar('facilities'),
 
             ];
 
@@ -122,6 +143,7 @@ class TourPackages extends ResourceController
                 'min_people' => $this->request->getVar('min_people'),
                 'max_people' => $this->request->getVar('max_people'),
                 'price' => $this->request->getVar('price'),
+                'facilities' => $this->request->getVar('facilities'),
             ];
         } else {
             // Prepare data for updating
@@ -132,6 +154,7 @@ class TourPackages extends ResourceController
                 'min_people' => $this->request->getVar('min_people'),
                 'max_people' => $this->request->getVar('max_people'),
                 'price' => $this->request->getVar('price'),
+                'facilities' => $this->request->getVar('facilities'),
             ];
         }
 

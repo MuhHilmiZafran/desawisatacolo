@@ -112,30 +112,31 @@ class Comments extends ResourceController
       return $this->failNotFound('Komentar tidak ditemukan');
     }
   }
-  
+
   public function getCommentsByContentId($contentId)
   {
     // Fetch comments by content id from the database
     $data = $this->model->where('attraction_id', $contentId)->findAll();
 
+    // If no comments are found, return an empty array with a 200 status code
     if (!$data) {
-      return $this->failNotFound('Komentar tidak ditemukan');
+      return $this->respond([]);
     }
 
     return $this->respond($data);
   }
-public function getCommentCountByContentId($contentId)
-{
-  // Fetch the count of comments by content ID from the database
-  $count = $this->model->where('attraction_id', $contentId)->countAllResults();
+  public function getCommentCountByContentId($contentId)
+  {
+    // Fetch the count of comments by content ID from the database
+    $count = $this->model->where('attraction_id', $contentId)->countAllResults();
 
-  // Create a response array
-  $response = [
-    'status' => 200, // HTTP 200 OK
-    'error' => null,
-    'count' => $count,
-  ];
+    // Create a response array
+    $response = [
+      'status' => 200, // HTTP 200 OK
+      'error' => null,
+      'count' => $count,
+    ];
 
-  return $this->respond($response);
-}
+    return $this->respond($response);
+  }
 }

@@ -25,6 +25,26 @@ class Articles extends ResourceController
         return $this->respond($data);
     }
 
+    public function countArticles()
+    {
+        // Count the total number of attractions
+        $totalArticles = $this->model->countAll();
+
+        // Respond with the count
+        $response = [
+            'status' => 200, // HTTP 200 OK
+            'error' => null,
+            'data' => [
+                'total_articles' => $totalArticles,
+            ],
+            'messages' => [
+                'success' => 'Article count retrieved successfully'
+            ]
+        ];
+
+        return $this->respond($response);
+    }
+
     public function show($id = null)
     {
         // Fetch a specific attraction by ID
@@ -33,6 +53,21 @@ class Articles extends ResourceController
         if (!$data) {
             return $this->failNotFound('Article not found');
         }
+
+        return $this->respond($data);
+    }
+
+    public function views($id = null)
+    {
+        // Fetch a specific attraction by ID
+        $data = $this->model->find($id);
+
+        if (!$data) {
+            return $this->failNotFound('Attraction not found');
+        }
+
+        // Increment view count
+        $this->model->update($id, ['views' => $data['views'] + 1]);
 
         return $this->respond($data);
     }
@@ -55,7 +90,7 @@ class Articles extends ResourceController
                 'title' => $this->request->getVar('title'),
                 'image' => $newName,
                 'description' => $this->request->getVar('description'),
-
+                'views' => 0,
             ];
 
             // Insert the data into the database

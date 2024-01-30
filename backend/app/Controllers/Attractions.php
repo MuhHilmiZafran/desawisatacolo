@@ -25,6 +25,27 @@ class Attractions extends ResourceController
         return $this->respond($data);
     }
 
+    public function countAttractions()
+    {
+        // Count the total number of attractions
+        $totalAttractions = $this->model->countAll();
+
+        // Respond with the count
+        $response = [
+            'status' => 200, // HTTP 200 OK
+            'error' => null,
+            'data' => [
+                'total_attractions' => $totalAttractions,
+            ],
+            'messages' => [
+                'success' => 'Attraction count retrieved successfully'
+            ]
+        ];
+
+        return $this->respond($response);
+    }
+
+
     public function show($id = null)
     {
         // Fetch a specific attraction by ID
@@ -34,8 +55,26 @@ class Attractions extends ResourceController
             return $this->failNotFound('Attraction not found');
         }
 
+
+
         return $this->respond($data);
     }
+
+    public function views($id = null)
+    {
+        // Fetch a specific attraction by ID
+        $data = $this->model->find($id);
+
+        if (!$data) {
+            return $this->failNotFound('Attraction not found');
+        }
+
+        // Increment view count
+        $this->model->update($id, ['views' => $data['views'] + 1]);
+
+        return $this->respond($data);
+    }
+
 
     public function create()
     {
@@ -58,6 +97,9 @@ class Attractions extends ResourceController
                 'category_id' => $this->request->getVar('category_id'),
                 'facilities' => $this->request->getVar('facilities'),
                 'price' => $this->request->getVar('price'),
+                'latitude' => $this->request->getVar('latitude'),
+                'longitude' => $this->request->getVar('longitude'),
+                'views' => 0,
             ];
 
             // Insert the data into the database
@@ -121,6 +163,8 @@ class Attractions extends ResourceController
                 'category_id' => $this->request->getVar('category_id'),
                 'facilities' => $this->request->getVar('facilities'),
                 'price' => $this->request->getVar('price'),
+                'latitude' => $this->request->getVar('latitude'),
+                'longitude' => $this->request->getVar('longitude'),
             ];
         } else {
             // Prepare data for updating
@@ -131,6 +175,8 @@ class Attractions extends ResourceController
                 'facilities' => $this->request->getVar('facilities'),
                 'category_id' => $this->request->getVar('category_id'),
                 'price' => $this->request->getVar('price'),
+                'latitude' => $this->request->getVar('latitude'),
+                'longitude' => $this->request->getVar('longitude'),
             ];
         }
 

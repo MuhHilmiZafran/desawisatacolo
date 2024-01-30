@@ -87,12 +87,6 @@ class Auth extends BaseController
     // Validasi email dan password
     if ($user && password_verify($password, $user['password'])) {
 
-      // $key = 'your_secret_key'; // Replace with your own secret key
-      $payload = [
-        'id' => $user['id'],
-        'email' => $user['email'],
-        'role' => $user['role']
-      ];
       // $token = JWT::encode($payload, $key);
 
       $data = [
